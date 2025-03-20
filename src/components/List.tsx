@@ -12,6 +12,7 @@ export default function List({ todos }: { todos: Todo[] }) {
     onDragOver={event => {
       event.preventDefault();
       const targetId = (event.target as Element).closest('li')?.dataset.id;
+      
       if (!targetId || !draggingTodo) return;
       const draggedIndex = todos.findIndex((t) => t.id === draggingTodo.id);
       const targetIndex = todos.findIndex((t) => t.id === Number(targetId));
@@ -24,13 +25,18 @@ export default function List({ todos }: { todos: Todo[] }) {
     onDrop={event => {
       const id = (event.target as Element).closest('li')?.dataset.id;
       if (!id || !draggingTodo) return;
+      
 
       const index = todos.findIndex(t => t.id === Number(id));
       relocate(draggingTodo, index);
       setTo(null)
       setTopOrBot('');
       setDraggingTodo(null);
-    }}>
+    }}
+    onDragLeave={ () => {
+      setTo(null)
+    }}
+    >
     <legend>Todo List</legend>
     <ol>
       {todos.map(todo => {
